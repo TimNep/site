@@ -13,10 +13,9 @@
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Tailwind CSS (via CDN for single-file approach) -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Tailwind Config for Custom Colors -->
     <script>
         tailwind.config = {
             theme: {
@@ -37,7 +36,6 @@
     </script>
 
     <style>
-        /* Custom Animations */
         .glass-panel {
             background: rgba(17, 34, 64, 0.7);
             backdrop-filter: blur(10px);
@@ -64,7 +62,6 @@
             transform: translateY(0);
         }
 
-        /* Notion Block Styling */
         .notion-block {
             background-color: #ffffff;
             color: #37352f;
@@ -75,6 +72,13 @@
             background-color: #f7f6f3;
             border-right: 1px solid rgba(55, 53, 47, 0.09);
         }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .ai-float { animation: float 3s ease-in-out infinite; }
     </style>
 </head>
 <body class="bg-deepBlue text-gray-300 font-sans antialiased overflow-x-hidden selection:bg-neonGreen selection:text-deepBlue">
@@ -96,7 +100,6 @@
 
     <!-- Hero Section -->
     <header class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-        <!-- Background accents -->
         <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neonBlue rounded-full mix-blend-multiply filter blur-[128px] opacity-20"></div>
         <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neonGreen rounded-full mix-blend-multiply filter blur-[128px] opacity-10"></div>
         
@@ -110,6 +113,26 @@
                 Структура. Діджитал. Результат. Від «імітації діяльності» до реального управління.
             </p>
             
+            <!-- Countdown Display (Fixed the error by adding these IDs) -->
+            <div class="flex justify-center space-x-4 mb-10">
+                <div class="glass-panel p-3 rounded-lg min-w-[70px]">
+                    <div id="days" class="text-2xl font-bold text-white">00</div>
+                    <div class="text-[10px] uppercase text-neonBlue">Днів</div>
+                </div>
+                <div class="glass-panel p-3 rounded-lg min-w-[70px]">
+                    <div id="hours" class="text-2xl font-bold text-white">00</div>
+                    <div class="text-[10px] uppercase text-neonBlue">Годин</div>
+                </div>
+                <div class="glass-panel p-3 rounded-lg min-w-[70px]">
+                    <div id="minutes" class="text-2xl font-bold text-white">00</div>
+                    <div class="text-[10px] uppercase text-neonBlue">Хв</div>
+                </div>
+                <div class="glass-panel p-3 rounded-lg min-w-[70px]">
+                    <div id="seconds" class="text-2xl font-bold text-white">00</div>
+                    <div class="text-[10px] uppercase text-neonBlue">Сек</div>
+                </div>
+            </div>
+
             <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
                 <a href="#solutions" class="px-8 py-4 bg-transparent border-2 border-neonBlue text-neonBlue font-bold rounded hover:bg-neonBlue hover:text-deepBlue transition duration-300 w-full sm:w-auto">
                     Читати програму
@@ -119,28 +142,37 @@
                 </a>
             </div>
 
-            <!-- Countdown Timer -->
-            <div class="mt-20 glass-panel inline-block p-6 rounded-xl neon-border">
-                <p class="text-sm text-gray-400 mb-4 uppercase tracking-widest">До дня виборів залишилось:</p>
-                <div class="flex space-x-4 md:space-x-8 justify-center text-white font-heading font-bold" id="countdown">
-                    <div class="flex flex-col"><span id="days" class="text-4xl md:text-5xl text-neonBlue">00</span><span class="text-xs text-gray-500 mt-1">Днів</span></div>
-                    <div class="text-4xl md:text-5xl text-gray-600">:</div>
-                    <div class="flex flex-col"><span id="hours" class="text-4xl md:text-5xl text-white">00</span><span class="text-xs text-gray-500 mt-1">Годин</span></div>
-                    <div class="text-4xl md:text-5xl text-gray-600">:</div>
-                    <div class="flex flex-col"><span id="minutes" class="text-4xl md:text-5xl text-white">00</span><span class="text-xs text-gray-500 mt-1">Хвилин</span></div>
-                    <div class="text-4xl md:text-5xl text-gray-600">:</div>
-                    <div class="flex flex-col"><span id="seconds" class="text-4xl md:text-5xl text-neonGreen">00</span><span class="text-xs text-gray-500 mt-1">Секунд</span></div>
-                </div>
-            </div>
+            <!-- AI Assistant Button ✨ -->
+            <button onclick="toggleAiAssistant()" class="mt-8 px-6 py-3 glass-panel rounded-full text-neonBlue hover:text-white transition flex items-center mx-auto ai-float border border-neonBlue/30">
+                <i class="fas fa-robot mr-2"></i> ✨ Запитай у мого AI-асистента
+            </button>
         </div>
     </header>
+
+    <!-- AI Assistant Modal ✨ -->
+    <div id="aiModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div class="bg-deepBlueLight w-full max-w-lg rounded-2xl border border-neonBlue p-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-heading font-bold text-white">✨ AI-помічник Тимофія</h3>
+                <button onclick="toggleAiAssistant()" class="text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <div id="chatHistory" class="h-64 overflow-y-auto mb-4 space-y-3 p-2 bg-deepBlue rounded-lg text-sm">
+                <div class="text-neonBlue bg-neonBlue/10 p-3 rounded-lg border border-neonBlue/20">
+                    Привіт! Я AI-модель, яка знає все про програму Тимофія Усова. Запитай мене про реформи, діджитал або освіту!
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <input id="aiQuestion" type="text" placeholder="Наприклад: Що таке DRI?" class="flex-1 bg-deepBlue border border-gray-700 rounded px-4 py-2 text-white outline-none focus:border-neonBlue">
+                <button onclick="askAiProgram()" class="bg-neonBlue text-deepBlue font-bold px-4 py-2 rounded hover:bg-white transition">Запитати</button>
+            </div>
+        </div>
+    </div>
 
     <!-- 1. Who am I? -->
     <section id="about" class="py-24 bg-deepBlueLight relative border-t border-gray-800">
         <div class="container mx-auto px-6">
             <div class="flex flex-col md:flex-row items-center gap-12">
                 <div class="w-full md:w-1/3 animate-on-scroll">
-                    <!-- Image Placeholder -->
                     <div class="relative w-full aspect-square rounded-2xl overflow-hidden border-2 border-neonBlue group">
                         <div class="absolute inset-0 bg-deepBlue flex flex-col items-center justify-center text-center p-6 z-10 transition group-hover:opacity-90">
                             <i class="fas fa-user-tie text-5xl text-neonBlue mb-4"></i>
@@ -152,10 +184,10 @@
                 <div class="w-full md:w-2/3 animate-on-scroll delay-100">
                     <h2 class="text-3xl md:text-5xl font-heading font-bold text-white mb-6">Хто я і чому саме зараз?</h2>
                     <p class="text-lg text-gray-300 mb-6 leading-relaxed">
-                        Я — ліцеїст, який за два роки пройшов шлях від рядового учня до представника класу, члена президентської ради та голови медіакомітету. За цей час я не тільки спостерігав як воно працює, а й намагався покращити його зсередини. 
+                        Я — ліцеїст, який за два роки пройшов шлях від рядового учня до представника класу, члена президентської ради та голови медіакомітету.
                     </p>
                     <p class="text-lg text-gray-300 mb-8 leading-relaxed">
-                        Я знаю цю систему зі своїх очей. Я бачив, як Президент існував «для галочки» і як приймалися рішення. Наше самоврядування вимірює успіх кількістю заходів та фотографій у Facebook. <strong>Я вирішив: якщо не я — то хто?</strong>
+                        Я бачив, як Президент існував «для галочки». <strong>Я вирішив: якщо не я — то хто?</strong>
                     </p>
                     
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -181,12 +213,11 @@
         </div>
     </section>
 
-    <!-- 2. Problems vs Solutions & 4. Modern Management -->
+    <!-- 2. Problems vs Solutions -->
     <section id="solutions" class="py-24 bg-deepBlue">
         <div class="container mx-auto px-6">
             <div class="text-center mb-16 animate-on-scroll">
                 <h2 class="text-3xl md:text-5xl font-heading font-bold text-white mb-4">Від «для галочки» до <span class="text-neonBlue">Реальної Влади</span></h2>
-                <p class="text-xl text-gray-400">Справжнє самоврядування починається з розподілу відповідальності.</p>
             </div>
 
             <div class="overflow-x-auto animate-on-scroll">
@@ -200,19 +231,9 @@
                     </thead>
                     <tbody class="text-gray-300">
                         <tr class="border-b border-gray-800 hover:bg-deepBlueLight transition">
-                            <td class="py-4 px-6 font-semibold">Центр рішень</td>
-                            <td class="py-4 px-6">Фактично — педагог-організатор</td>
-                            <td class="py-4 px-6 text-white font-medium">Президент + голови комітетів</td>
-                        </tr>
-                        <tr class="border-b border-gray-800 hover:bg-deepBlueLight transition">
                             <td class="py-4 px-6 font-semibold">Роль Президента</td>
-                            <td class="py-4 px-6">Церемоніальна, «для галочки»</td>
+                            <td class="py-4 px-6">Церемоніальна</td>
                             <td class="py-4 px-6 text-white font-medium">CEO: стратег і менеджер</td>
-                        </tr>
-                        <tr class="border-b border-gray-800 hover:bg-deepBlueLight transition">
-                            <td class="py-4 px-6 font-semibold">Парламент</td>
-                            <td class="py-4 px-6">Слухає та виконує</td>
-                            <td class="py-4 px-6 text-white font-medium">Голосує, контролює, ухвалює (Рада Лідерів)</td>
                         </tr>
                         <tr class="border-b border-gray-800 hover:bg-deepBlueLight transition">
                             <td class="py-4 px-6 font-semibold">Відповідальність</td>
@@ -223,324 +244,213 @@
                 </table>
             </div>
 
-            <!-- Management Methodologies -->
             <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="glass-panel p-8 rounded-xl animate-on-scroll">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-neonBlue/20 rounded-full flex items-center justify-center mr-4">
-                            <i class="fas fa-bullseye text-neonBlue text-xl"></i>
-                        </div>
-                        <h3 class="text-2xl font-heading font-bold text-white">Концепція DRI</h3>
-                    </div>
-                    <p class="text-gray-400">Directly Responsible Individual. Відмова від «колективної безвідповідальності». Кожне завдання має <strong>одного</strong> відповідального. Це не покарання, а визнання твоєї ролі та можливість отримати реальний кейс у портфоліо.</p>
+                    <h3 class="text-2xl font-heading font-bold text-white mb-4"><i class="fas fa-bullseye text-neonBlue mr-3"></i> Концепція DRI</h3>
+                    <p class="text-gray-400">Кожне завдання має одного відповідального. Це можливість отримати реальний кейс у портфоліо.</p>
                 </div>
                 <div class="glass-panel p-8 rounded-xl animate-on-scroll delay-100">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-neonGreen/20 rounded-full flex items-center justify-center mr-4">
-                            <i class="fas fa-sync-alt text-neonGreen text-xl"></i>
-                        </div>
-                        <h3 class="text-2xl font-heading font-bold text-white">Agile & Scrum</h3>
-                    </div>
-                    <p class="text-gray-400">Ми відмовляємося від затяжних планувань, які ні до чого не призводять. Робота спринтами (короткими етапами), Trello для візуалізації задач (Kanban) та регулярні стендапи. Інтеграція професійних методологій ведення проєктів.</p>
+                    <h3 class="text-2xl font-heading font-bold text-white mb-4"><i class="fas fa-sync-alt text-neonGreen mr-3"></i> Agile & Scrum</h3>
+                    <p class="text-gray-400">Робота спринтами, Trello для візуалізації задач та регулярні стендапи.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 3. Tech Stack: Digital Revolution -->
+    <!-- 3. Tech Stack (Notion Block) -->
     <section id="digital" class="py-24 bg-white text-gray-900 relative">
         <div class="container mx-auto px-6">
             <div class="text-center mb-16 animate-on-scroll">
-                <h2 class="text-3xl md:text-5xl font-heading font-black text-gray-900 mb-4">Діджитал-революція</h2>
-                <p class="text-xl text-gray-600">Сьогодні самоврядування живе у хаосі Telegram-чатів. Ми це змінюємо.</p>
+                <h2 class="text-3xl md:text-5xl font-heading font-black text-gray-900 mb-4 uppercase">Діджитал-революція</h2>
             </div>
 
-            <!-- NOTION THEMED BLOCK -->
-            <div class="notion-block flex flex-col md:flex-row overflow-hidden max-w-5xl mx-auto border border-gray-200 animate-on-scroll">
-                <!-- Sidebar -->
-                <div class="notion-sidebar w-full md:w-64 p-4 hidden md:block">
+            <div class="notion-block flex flex-col md:flex-row overflow-hidden max-w-5xl mx-auto border border-gray-200 animate-on-scroll shadow-2xl">
+                <div class="notion-sidebar w-64 p-4 hidden md:block">
                     <div class="flex items-center space-x-2 mb-6">
                         <div class="w-5 h-5 bg-black rounded text-white flex items-center justify-center text-xs font-bold">T</div>
                         <span class="font-medium text-sm">Ліцей №241 OS</span>
                     </div>
-                    <div class="space-y-1 text-sm text-gray-600">
-                        <div class="flex items-center space-x-2 p-1.5 hover:bg-gray-200 rounded cursor-pointer bg-gray-200 font-medium text-black">
-                            <i class="fas fa-home w-4"></i> <span>Головна (Дашборд)</span>
-                        </div>
-                        <div class="flex items-center space-x-2 p-1.5 hover:bg-gray-200 rounded cursor-pointer">
-                            <i class="fas fa-tasks w-4"></i> <span>Проєкти та Задачі</span>
-                        </div>
-                        <div class="flex items-center space-x-2 p-1.5 hover:bg-gray-200 rounded cursor-pointer">
-                            <i class="fas fa-users w-4"></i> <span>Команда (DRI)</span>
-                        </div>
-                        <div class="flex items-center space-x-2 p-1.5 hover:bg-gray-200 rounded cursor-pointer">
-                            <i class="fas fa-file-alt w-4"></i> <span>Звітність (Публічна)</span>
-                        </div>
+                    <div class="space-y-1 text-sm text-gray-600 italic">
+                        <div><i class="fas fa-home w-4"></i> Дашборд</div>
+                        <div><i class="fas fa-tasks w-4"></i> Проєкти</div>
+                        <div><i class="fas fa-users w-4"></i> DRI</div>
                     </div>
                 </div>
                 
-                <!-- Main Content (Notion Style) -->
                 <div class="flex-1 p-8 md:p-12">
-                    <div class="flex items-center text-gray-400 text-sm mb-6">
-                        <span>Ліцей №241 OS</span> <span class="mx-2">/</span> <span class="text-gray-800">Головна (Дашборд)</span>
-                    </div>
-                    <h1 class="text-4xl font-bold mb-6 font-sans tracking-tight">💻 Notion — наш новий хаб</h1>
-                    
-                    <p class="mb-4 text-gray-700 leading-relaxed">
-                        Замість загублених повідомлень — єдиний простір. Кожен ліцеїст матиме доступ до публічного дашборду у режимі читання, щоб бачити, чим реально займається самоврядування.
-                    </p>
-                    
+                    <h1 class="text-4xl font-bold mb-6 font-sans">💻 Notion — наш новий хаб</h1>
+                    <p class="mb-4 text-gray-700">Замість загублених повідомлень — єдиний простір. Кожен ліцеїст матиме доступ до публічного дашборду.</p>
                     <div class="bg-gray-100 p-4 rounded mb-6 border-l-4 border-black">
-                        <p class="font-medium"><i class="fas fa-lightbulb text-yellow-500 mr-2"></i> Чому це важливо?</p>
-                        <p class="text-sm text-gray-600 mt-1">Відкрита звітність перед Радою щосеместрово. Ви бачите статус кожного завдання.</p>
+                        <p class="font-medium">Прозорість: Ви бачите статус кожного завдання в реальному часі.</p>
                     </div>
-
-                    <h3 class="text-xl font-bold mb-3 mt-8">🛠 Інші інструменти</h3>
-                    <ul class="space-y-3">
-                        <li class="flex items-start">
-                            <i class="fab fa-trello text-blue-500 mt-1 mr-3 text-lg"></i>
-                            <div>
-                                <strong>Trello:</strong> Для управління задачами (Kanban) на рівні комітетів.
-                            </div>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-file-excel text-green-600 mt-1 mr-3 text-lg"></i>
-                            <div>
-                                <strong>Google Sheets:</strong> Прозора аналітика, планування бюджетів заходів та збір даних.
-                            </div>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fab fa-telegram text-blue-400 mt-1 mr-3 text-lg"></i>
-                            <div>
-                                <strong>Telegram:</strong> Тільки для оперативної комунікації, а не для зберігання файлів чи постановки задач.
-                            </div>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 5. Educational Program: Open Horizons -->
-    <section id="education" class="py-24 bg-deepBlueLight border-t border-gray-800 relative overflow-hidden">
-        <div class="container mx-auto px-6 relative z-10">
+    <!-- 5. Educational Program -->
+    <section id="education" class="py-24 bg-deepBlueLight border-t border-gray-800">
+        <div class="container mx-auto px-6">
             <div class="text-center mb-16 animate-on-scroll">
                 <h2 class="text-3xl md:text-5xl font-heading font-bold text-white mb-4">Програма <span class="text-neonGreen">«Відкриті горизонти»</span></h2>
-                <p class="text-xl text-gray-400 max-w-3xl mx-auto">Ліцей — це не лише атестат. Самоврядування має відкривати двері у великий світ. Навички, які вирізнять тебе серед тисяч.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Card 1 -->
-                <div class="bg-deepBlue border border-gray-700 hover:border-neonBlue p-6 rounded-xl transition duration-300 transform hover:-translate-y-2 animate-on-scroll">
-                    <div class="text-neonBlue text-4xl mb-4"><i class="fas fa-globe-americas"></i></div>
-                    <h3 class="text-xl font-bold text-white mb-3">Global Education</h3>
-                    <p class="text-gray-400 text-sm">Лекції про Coursera, edX, Google Career Certificates. Як безкоштовно навчатись на рівні топових університетів світу ще у ліцеї.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-deepBlue p-6 rounded-xl border border-gray-700 animate-on-scroll">
+                    <i class="fas fa-globe text-neonBlue text-3xl mb-4"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">Global Education</h3>
+                    <p class="text-gray-400 text-sm">Курси Google та Coursera безкоштовно ще у школі.</p>
                 </div>
-                
-                <!-- Card 2 -->
-                <div class="bg-deepBlue border border-gray-700 hover:border-neonGreen p-6 rounded-xl transition duration-300 transform hover:-translate-y-2 animate-on-scroll delay-100">
-                    <div class="text-neonGreen text-4xl mb-4"><i class="fas fa-plane-departure"></i></div>
-                    <h3 class="text-xl font-bold text-white mb-3">Мобільність (Erasmus+)</h3>
-                    <p class="text-gray-400 text-sm">Воркшопи про Erasmus+ Youth, молодіжні обміни. Як підлітку поїхати за кордон на навчання та отримати міжнародний досвід.</p>
+                <div class="bg-deepBlue p-6 rounded-xl border border-gray-700 animate-on-scroll delay-100">
+                    <i class="fas fa-robot text-purple-400 text-3xl mb-4"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">AI Tools</h3>
+                    <p class="text-gray-400 text-sm">Як використовувати ШІ для навчання з розумом.</p>
                 </div>
-
-                <!-- Card 3 -->
-                <div class="bg-deepBlue border border-gray-700 hover:border-purple-400 p-6 rounded-xl transition duration-300 transform hover:-translate-y-2 animate-on-scroll delay-200">
-                    <div class="text-purple-400 text-4xl mb-4"><i class="fas fa-robot"></i></div>
-                    <h3 class="text-xl font-bold text-white mb-3">AI Tools</h3>
-                    <p class="text-gray-400 text-sm">Серія «AI для школяра». Як використовувати штучний інтелект для навчання, творчості та кар'єри з розумом і без шахрайства.</p>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="bg-deepBlue border border-gray-700 hover:border-yellow-400 p-6 rounded-xl transition duration-300 transform hover:-translate-y-2 animate-on-scroll delay-300">
-                    <div class="text-yellow-400 text-4xl mb-4"><i class="fas fa-hands-helping"></i></div>
-                    <h3 class="text-xl font-bold text-white mb-3">Українські можливості</h3>
-                    <p class="text-gray-400 text-sm">Знайомство з локальними ініціативами (Благомай, МАН, професійні курси). Зустрічі з випускниками та молодими підприємцями.</p>
-                </div>
-            </div>
-
-            <div class="mt-12 text-center animate-on-scroll">
-                <blockquote class="text-xl md:text-2xl italic text-gray-300 font-light border-l-4 border-neonBlue pl-6 py-2 inline-block text-left">
-                    "Мета — щоб через рік ліцеїст міг сказати: <br>
-                    <span class="font-bold text-white">«Я вже маю сертифікат Google. Я вже подав заявку на Erasmus. Я вже знаю, ким хочу бути.»</span>"
-                </blockquote>
-            </div>
-        </div>
-    </section>
-
-    <!-- 6. New Partnership Model -->
-    <section id="partnership" class="py-24 bg-deepBlue">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col lg:flex-row gap-16 items-center">
-                <div class="w-full lg:w-1/2 animate-on-scroll">
-                    <h2 class="text-3xl md:text-5xl font-heading font-bold text-white mb-6">Нова модель партнерства з дорослими</h2>
-                    <p class="text-lg text-gray-400 mb-6">
-                        Доросла підтримка — це цінність. Досвід, зв'язки, знання системи — все це неоціненно. Але є різниця між тим, хто допомагає тобі прийняти рішення — і тим, хто приймає його замість тебе.
-                    </p>
-                    <p class="text-lg text-gray-400 font-bold text-neonBlue">
-                        Ми не боремося з адміністрацією. Ми пропонуємо професійну співпрацю.
-                    </p>
-                </div>
-                
-                <div class="w-full lg:w-1/2 animate-on-scroll delay-100">
-                    <div class="glass-panel p-1 rounded-xl">
-                        <table class="w-full text-left">
-                            <thead>
-                                <tr>
-                                    <th class="py-4 px-6 text-gray-400 border-b border-gray-700/50 w-1/2">Поточна роль (Куратор)</th>
-                                    <th class="py-4 px-6 text-neonGreen font-bold border-b border-gray-700/50 w-1/2">Нова роль (Ментор)</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-sm md:text-base">
-                                <tr>
-                                    <td class="py-4 px-6 border-b border-gray-700/30 line-through text-gray-500">Центр прийняття рішень</td>
-                                    <td class="py-4 px-6 border-b border-gray-700/30 text-white font-medium">Стратегічний консультант</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-4 px-6 border-b border-gray-700/30 line-through text-gray-500">Організатор заходів</td>
-                                    <td class="py-4 px-6 border-b border-gray-700/30 text-white font-medium">Ментор при складних кейсах</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-4 px-6 border-b border-gray-700/30 line-through text-gray-500">Фільтр для ідей учнів</td>
-                                    <td class="py-4 px-6 border-b border-gray-700/30 text-white font-medium">Адвайзер, який відкриває двері</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-4 px-6 line-through text-gray-500">Виконавча влада де-факто</td>
-                                    <td class="py-4 px-6 text-white font-medium">Гарант законності та підтримки</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="bg-deepBlue p-6 rounded-xl border border-gray-700 animate-on-scroll delay-200">
+                    <i class="fas fa-plane-departure text-neonGreen text-3xl mb-4"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">Erasmus+</h3>
+                    <p class="text-gray-400 text-sm">Воркшопи про міжнародні обміни для підлітків.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- 7. Feedback Form -->
-    <section id="feedback" class="py-24 bg-neonBlue text-deepBlue relative">
+    <section id="feedback" class="py-24 bg-neonBlue text-deepBlue">
         <div class="container mx-auto px-6">
             <div class="max-w-3xl mx-auto text-center animate-on-scroll">
                 <h2 class="text-4xl font-heading font-black mb-6">Твій голос має значення</h2>
-                <p class="text-xl mb-10 font-medium">Самоврядування працює для тебе. Залиш свою ідею для ліцею, і ми включимо її до беклогу (спринту) після перемоги.</p>
                 
                 <form id="ideaForm" class="bg-white p-8 rounded-2xl shadow-2xl text-left">
-                    <div class="mb-6">
-                        <label class="block text-sm font-bold text-gray-700 mb-2" for="name">Як до тебе звертатися? (Ім'я, Клас)</label>
-                        <input class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded focus:outline-none focus:border-neonBlue focus:ring-2 focus:ring-neonBlue/20 transition" type="text" id="name" placeholder="Напр. Олексій, 10-А" required>
+                    <div class="mb-4">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Ім'я та Клас</label>
+                        <input class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded outline-none" type="text" id="name" placeholder="Напр. Олексій, 10-А" required>
                     </div>
                     <div class="mb-6">
-                        <label class="block text-sm font-bold text-gray-700 mb-2" for="idea">Твоя ідея або проблема</label>
-                        <textarea class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded h-32 resize-none focus:outline-none focus:border-neonBlue focus:ring-2 focus:ring-neonBlue/20 transition" id="idea" placeholder="Опиши, що б ти хотів змінити чи додати..." required></textarea>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Твоя ідея або проблема</label>
+                        <textarea class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded h-32 outline-none" id="idea" placeholder="Опиши, що хочеш змінити..." required></textarea>
                     </div>
-                    <button type="submit" class="w-full bg-deepBlue text-white font-bold py-4 rounded hover:bg-black transition duration-300 flex justify-center items-center">
-                        <span>Надіслати ідею</span> <i class="fas fa-paper-plane ml-2"></i>
+                    <button type="submit" class="w-full bg-deepBlue text-white font-bold py-4 rounded hover:bg-black transition">
+                        Надіслати ідею
                     </button>
-                    
-                    <!-- Success Message (Hidden by default) -->
-                    <div id="successMsg" class="hidden mt-4 p-4 bg-green-100 text-green-800 rounded text-center font-medium">
-                        <i class="fas fa-check-circle mr-2"></i> Дякую! Твоя ідея успішно додана до нашого Notion-беклогу.
-                    </div>
+                    <div id="successMsg" class="hidden mt-4 p-4 bg-green-100 text-green-800 rounded text-center">Ідея успішно додана!</div>
                 </form>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-black text-gray-400 py-12 border-t border-gray-900">
-        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
-            <div class="mb-6 md:mb-0 text-center md:text-left">
-                <div class="font-heading font-bold text-2xl text-white tracking-wider mb-2">
-                    ТИМОФІЙ<span class="text-neonBlue">2026</span>
-                </div>
-                <p class="text-sm">Ліцей №241 «Голосіївський»</p>
-                <p class="text-xs mt-1 text-gray-600">&copy; 2026. Всі права захищено.</p>
-            </div>
-            
-            <div class="text-center mb-6 md:mb-0">
-                <p class="text-lg font-heading font-bold text-white italic">
-                    "Нам не потрібне самоврядування, яке існує для фотографій.<br>
-                    <span class="text-neonGreen">Нам потрібне самоврядування, яке існує для нас.</span>"
-                </p>
-            </div>
-
-            <div class="flex space-x-6 text-2xl">
-                <a href="#" class="hover:text-neonBlue transition transform hover:scale-110"><i class="fab fa-telegram"></i></a>
-                <a href="#" class="hover:text-pink-500 transition transform hover:scale-110"><i class="fab fa-instagram"></i></a>
-            </div>
+    <footer class="bg-black text-gray-400 py-12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="font-heading font-bold text-2xl text-white tracking-wider mb-2 uppercase">ТИМОФІЙ<span class="text-neonBlue">2026</span></div>
+            <p class="text-sm">&copy; 2026. Ліцей №241 «Голосіївський»</p>
         </div>
     </footer>
 
-    <!-- Interactive Scripts -->
+    <!-- Scripts -->
     <script>
-        // 1. Countdown Timer Logic (Target Date: Example May 15, 2026)
-        // You can change the target date below
-        const targetDate = new Date('May 15, 2026 08:00:00').getTime();
+        const apiKey = ""; // API Key injects automatically
 
-        const updateCountdown = setInterval(() => {
+        // --- AI ASSISTANT ---
+        async function callGemini(prompt, system) {
+            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                systemInstruction: { parts: [{ text: system }] }
+            };
+
+            let delay = 1000;
+            for (let i = 0; i < 5; i++) {
+                try {
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        body: JSON.stringify(payload),
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    const data = await response.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text || "Помилка відповіді.";
+                } catch (e) {
+                    await new Promise(r => setTimeout(r, delay));
+                    delay *= 2;
+                }
+            }
+            return "Не вдалося з'єднатися з AI. Спробуйте пізніше.";
+        }
+
+        async function askAiProgram() {
+            const input = document.getElementById('aiQuestion');
+            const chat = document.getElementById('chatHistory');
+            const q = input.value.trim();
+            if(!q) return;
+
+            input.disabled = true;
+            const userMsg = document.createElement('div');
+            userMsg.className = 'text-white mt-2';
+            userMsg.innerHTML = `<b>Ви:</b> ${q}`;
+            chat.appendChild(userMsg);
+
+            const system = "Ти - AI асистент передвиборчої кампанії Тимофія Усова (Ліцей 241). Твоя база: Структура (DRI, Agile), Діджитал (Notion, Trello), Освіта (Global Ed, Erasmus+, AI). Відповідай коротко, впевнено, молодіжно.";
+            
+            const answer = await callGemini(q, system);
+            
+            const aiMsg = document.createElement('div');
+            aiMsg.className = 'text-neonGreen mt-1';
+            aiMsg.innerHTML = `<b>AI:</b> ${answer}`;
+            chat.appendChild(aiMsg);
+            chat.scrollTop = chat.scrollHeight;
+            
+            input.value = "";
+            input.disabled = false;
+        }
+
+        function toggleAiAssistant() {
+            const modal = document.getElementById('aiModal');
+            modal.classList.toggle('hidden');
+        }
+
+        // --- FIXED COUNTDOWN TIMER ---
+        const targetDate = new Date('May 15, 2026 08:00:00').getTime();
+        
+        function updateCountdown() {
             const now = new Date().getTime();
             const distance = targetDate - now;
 
-            if (distance < 0) {
-                clearInterval(updateCountdown);
-                document.getElementById('countdown').innerHTML = "<div class='text-neonGreen text-3xl font-bold'>ДЕНЬ ВИБОРІВ!</div>";
-                return;
-            }
+            // Check if elements exist before updating (Fixes TypeError)
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            const minsEl = document.getElementById('minutes');
+            const secsEl = document.getElementById('seconds');
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById('days').innerText = days.toString().padStart(2, '0');
-            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
-            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
-        }, 1000);
-
-        // 2. Scroll Animations (Intersection Observer)
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.15
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target); // Animate only once
+            if (daysEl && hoursEl && minsEl && secsEl) {
+                if (distance < 0) {
+                    daysEl.innerText = "00";
+                    hoursEl.innerText = "00";
+                    minsEl.innerText = "00";
+                    secsEl.innerText = "00";
+                    return;
                 }
-            });
-        }, observerOptions);
 
-        document.querySelectorAll('.animate-on-scroll').forEach((elem) => {
-            observer.observe(elem);
-        });
+                daysEl.innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                hoursEl.innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                minsEl.innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                secsEl.innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+            }
+        }
 
-        // 3. Form Submission Simulation
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Run once immediately
+
+        // Scroll reveal
+        const obs = new IntersectionObserver((es) => es.forEach(e => e.isIntersecting && e.target.classList.add('visible')), {threshold: 0.1});
+        document.querySelectorAll('.animate-on-scroll').forEach(el => obs.observe(el));
+
+        // Form reset
         document.getElementById('ideaForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevent page reload
-            const btn = this.querySelector('button');
-            const originalText = btn.innerHTML;
-            
-            // Loading state
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Відправляємо...';
-            btn.classList.add('opacity-75', 'cursor-not-allowed');
-            
-            // Simulate API request
-            setTimeout(() => {
-                this.reset();
-                btn.innerHTML = originalText;
-                btn.classList.remove('opacity-75', 'cursor-not-allowed');
-                
-                const successMsg = document.getElementById('successMsg');
-                successMsg.classList.remove('hidden');
-                
-                // Hide message after 5 seconds
-                setTimeout(() => {
-                    successMsg.classList.add('hidden');
-                }, 5000);
-            }, 1000);
+            e.preventDefault();
+            this.reset();
+            const success = document.getElementById('successMsg');
+            success.classList.remove('hidden');
+            setTimeout(() => success.classList.add('hidden'), 3000);
         });
     </script>
 </body>
